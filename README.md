@@ -28,3 +28,9 @@ anthony.steele on Tue 03/02/2015 15:08
 anthony.steele on Tue 03/02/2015 14:50
  Formatting
 ```
+
+## Caveats
+
+Robustness is not yet guaranteed. Usage will flush this out.
+
+It assumes that the release depends upon the build that contains the changes. And that changes go from this build back to the last pin. It could be made more flexible if need be, but there is no use case for this yet.
