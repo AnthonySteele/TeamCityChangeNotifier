@@ -8,14 +8,19 @@ namespace TeamCityChangeNotifier
 	{
 		static void Main(string[] args)
 		{
-			int buildId;
-			if (args.Length > 0)
+			if (args.Length == 0)
 			{
-				buildId = int.Parse(args[0]);
+				Console.WriteLine("Please supply a teamcity build number");
+				return;
 			}
-			else
+
+			int buildId;
+			var parsed = int.TryParse(args[0], out buildId);
+			if (!parsed)
 			{
-				buildId = 209535;
+				var message = string.Format("The argument '{0}' is not a teamcity build number", args[0]);
+				Console.WriteLine(message);
+				return;
 			}
 
 			var task = TeamCityChangesForRelease(buildId);
