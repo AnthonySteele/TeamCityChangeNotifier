@@ -13,6 +13,17 @@ This involves walking along the TeamCity rest api a bit, since this build doesn'
 
 The steps to get it working are:  
 1.  Build this program.  
-2.  Configure the app.config with suitable values. You should know the teamcity url and smtp settings. The TeamCityAuthInfo [should be generated like this](http://stackoverflow.com/a/13706696/5599).  
-3. Find the TeamCity internal id of the build. If you are looking at a build result in a browser, it is the number in the url right after `?buildId=`. In  TeamCity build automation it is `build.number`
+2.  Configure the app.config with suitable values. You should know the teamcity url and smtp settings. The TeamCityAuthInfo [should be generated like the authInfo here](http://stackoverflow.com/a/13706696/5599).  
+3. Find the TeamCity internal id of the released build. If you are looking at a build result in a browser, it is the number in the url right after `?buildId=`. In  TeamCity build automation it is `build.number`
  
+
+## Sample output
+
+Release to Catalogue with 2 changes in 1 build
+
+anthony.steele on Tue 03/02/2015 15:08
+ HttpRequestException as release error not warming
+
+anthony.steele on Tue 03/02/2015 14:50
+ Formatting
+
