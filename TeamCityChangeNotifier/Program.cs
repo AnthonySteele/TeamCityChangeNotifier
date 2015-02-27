@@ -20,8 +20,6 @@ namespace TeamCityChangeNotifier
 
 			var task = TeamCityChangesForRelease(buildId);
 			task.Wait();
-
-			Console.ReadLine();
 		}
 
 		private static async Task TeamCityChangesForRelease(int buildId)
@@ -30,10 +28,13 @@ namespace TeamCityChangeNotifier
 			{
 				var reader = new TeamCityOperations();
 				var changes = await reader.ChangesForRelease(buildId);
-				Console.WriteLine(changes.Details());
+				//Console.WriteLine(changes.Details());
 
 				var sender = new EmailSender();
 				sender.SendNotification(changes);
+
+				Console.WriteLine(changes.Summary());
+				Console.WriteLine("success");
 
 			}
 			catch (Exception ex)
