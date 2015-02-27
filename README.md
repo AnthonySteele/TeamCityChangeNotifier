@@ -19,6 +19,7 @@ The steps to get it working are:
 
 ## Sample output
 
+```
 Release to Catalogue with 2 changes in 1 build
 
 anthony.steele on Tue 03/02/2015 15:08
@@ -26,4 +27,4 @@ anthony.steele on Tue 03/02/2015 15:08
 
 anthony.steele on Tue 03/02/2015 14:50
  Formatting
-
+```
