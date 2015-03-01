@@ -21,15 +21,15 @@ namespace TeamCityChangeNotifier
 			var firstBuild = await GetBuild(firstBuildId);
 			var firstBuildType = firstBuild.BuildType();
 
-			var buildIds = await BuildsIdsBackToLastPin(firstBuildId, firstBuildType);
-			var changeHrefs = await ReadAllChangeHrefsFromBuilds(buildIds);
+			var buildListData= await BuildsIdsBackToLastPin(firstBuildId, firstBuildType);
+			var changeHrefs = await ReadAllChangeHrefsFromBuilds(buildListData.Ids);
 			var changes = await ReadAllChanges(changeHrefs);
 
 			return new ChangeSet
 				{
 					ProjectName = projectName,
 					PinnedBuildId = firstBuildId,
-					AllBuilds = buildIds,
+					Builds = buildListData,
 					Changes = changes
 				};
 		}
@@ -65,7 +65,7 @@ namespace TeamCityChangeNotifier
 			return hrefs;
 		}
 
-		private async Task<List<int>>  BuildsIdsBackToLastPin(int firstBuildId, string firstBuildType)
+		private async Task<BuildListData> BuildsIdsBackToLastPin(int firstBuildId, string firstBuildType)
 		{
 			var buildListData = await reader.ReadBuildList(firstBuildType);
 			var buildList = new BuildListXmlParser(buildListData);

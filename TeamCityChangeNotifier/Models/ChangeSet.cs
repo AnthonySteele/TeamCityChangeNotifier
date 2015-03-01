@@ -7,7 +7,7 @@ namespace TeamCityChangeNotifier.Models
 	{
 		public List<ChangeData> Changes { get; set; }
 		public int PinnedBuildId { get; set; }
-		public List<int> AllBuilds { get; set; }
+		public BuildListData Builds { get; set; }
 		public string ProjectName { get; set; }
 
 		public string Summary()
@@ -42,8 +42,8 @@ namespace TeamCityChangeNotifier.Models
 
 		private string BuildCount()
 		{
-			var buildWord = (AllBuilds.Count == 1) ? "build" : "builds";
-			return string.Format("{0} {1}", AllBuilds.Count, buildWord);
+			var buildWord = (Builds.Ids.Count == 1) ? "build" : "builds";
+			return string.Format("{0} {1}", Builds.Ids.Count, buildWord);
 		}
 	}
 }

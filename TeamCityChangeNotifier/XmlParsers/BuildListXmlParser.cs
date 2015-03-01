@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Xml.Linq;
 
+using TeamCityChangeNotifier.Models;
+
 namespace TeamCityChangeNotifier.XmlParsers
 {
 	public class BuildListXmlParser
@@ -13,7 +15,7 @@ namespace TeamCityChangeNotifier.XmlParsers
 			buildDoc = XDocument.Parse(buildXml);
 		}
 
-		public List<int> FromIdBackToLastPin(int firstBuildId)
+		public BuildListData FromIdBackToLastPin(int firstBuildId)
 		{
 			var builds = buildDoc.Root.Descendants("build");
 			var foundStartBuild = false;
@@ -55,7 +57,10 @@ namespace TeamCityChangeNotifier.XmlParsers
 				throw new ParseException("Did not find previous pinned build");
 			}
 
-			return buildIds;
+			return new BuildListData
+				{
+					Ids = buildIds
+				};
 		}
 
 		private static int BuildId(XElement buildElement)
