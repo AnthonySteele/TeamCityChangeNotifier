@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using TeamCityChangeNotifier.Args;
+using TeamCityChangeNotifier.Helpers;
 using TeamCityChangeNotifier.Http;
 using TeamCityChangeNotifier.Models;
 using TeamCityChangeNotifier.XmlParsers;
@@ -36,29 +38,22 @@ namespace TeamCityChangeNotifier
 
 		private async Task<List<ChangeData>> ReadAllChanges(List<string> changeHrefs)
 		{
-			var changes = new List<ChangeData>();
+			var changeResponses = await Tasks.ReadParallel(changeHrefs, url => reader.ReadRelativeUrl(url));
+
 			var parser = new ChangeDataParser();
-
-			foreach (var changeHref in changeHrefs)
-			{
-				var changeResponse = await reader.ReadRelativeUrl(changeHref);
-
-				var change = parser.ReadXml(changeResponse);
-				changes.Add(change);
-			}
-
-			return changes;
+			return changeResponses
+				.Select(changeResponse => parser.ReadXml(changeResponse))
+				.ToList();
 		}
 
 		private async Task<List<string>> ReadAllChangeHrefsFromBuilds(List<int> buildIds)
 		{
+			var buildChangesDataList = await Tasks.ReadParallel(buildIds, id => reader.ReadBuildChanges(id));
+
 			var hrefs = new List<string>();
-
-			foreach (var buildId in buildIds)
+			foreach (var buildChangesData in buildChangesDataList)
 			{
-				var buildChangesData = await reader.ReadBuildChanges(buildId);
 				var changesInThisBuild = new ChangeListXmlParser(buildChangesData);
-
 				hrefs.AddRange(changesInThisBuild.ChangeHrefs());
 			}
 
