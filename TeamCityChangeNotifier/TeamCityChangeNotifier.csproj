@@ -46,6 +46,7 @@
     <Compile Include="Models\ChangeData.cs" />
     <Compile Include="Models\ChangeSet.cs" />
     <Compile Include="Email\EmailSender.cs" />
+    <Compile Include="XmlParsers\ParseException.cs" />
     <Compile Include="XmlParsers\ChangeDataParser.cs" />
     <Compile Include="XmlParsers\BuildListXmlParser.cs" />
     <Compile Include="XmlParsers\BuildXmlParser.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="TeamCityOperations.cs" />
     <Compile Include="Http\TeamCityReader.cs" />
     <Compile Include="Helpers\UriPath.cs" />
+    <Compile Include="XmlParsers\DateParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

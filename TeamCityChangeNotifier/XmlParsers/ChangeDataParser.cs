@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -31,10 +30,7 @@ namespace TeamCityChangeNotifier.XmlParsers
 		private DateTime ReadDate(XElement root)
 		{
 			var dateAttr = root.Attribute("date").Value;
-			dateAttr = dateAttr.Substring(0, dateAttr.IndexOf("+"));
-
-			var provider = CultureInfo.InvariantCulture;
-			return DateTime.ParseExact(dateAttr, "yyyyMMddTHHmmss", provider);
+			return DateParser.Parse(dateAttr);
 		}
 
 		private static int ReadId(XElement root)

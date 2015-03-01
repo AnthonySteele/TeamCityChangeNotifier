@@ -32,7 +32,6 @@ namespace TeamCityChangeNotifier.XmlParsers
 			return buildType.Attributes("projectName").First().Value;
 		}
 
-
 		public string Text
 		{
 			get { return buildDoc.ToString(); }

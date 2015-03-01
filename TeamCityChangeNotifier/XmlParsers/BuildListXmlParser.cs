@@ -16,17 +16,19 @@ namespace TeamCityChangeNotifier.XmlParsers
 		public List<int> FromIdBackToLastPin(int firstBuildId)
 		{
 			var builds = buildDoc.Root.Descendants("build");
-			var found = false;
+			var foundStartBuild = false;
+			var foundEndBuild = false;
 			var buildIds = new List<int>(); 
 
 			foreach (var buildElement in builds)
 			{
 				var buildId = BuildId(buildElement);
 
-				if (found)
+				if (foundStartBuild)
 				{
 					if ( BuildIsPinned(buildElement))
 					{
+						foundEndBuild = true;
 						break;
 					}
 
@@ -38,9 +40,19 @@ namespace TeamCityChangeNotifier.XmlParsers
 					if (buildId == firstBuildId)
 					{
 						buildIds.Add(buildId);
-						found = true;
+						foundStartBuild = true;
 					}
 				}
+			}
+
+			if (!foundStartBuild)
+			{
+				throw new ParseException("Did not find first build with Id " + firstBuildId);
+			}
+
+			if (!foundEndBuild)
+			{
+				throw new ParseException("Did not find previous pinned build");
 			}
 
 			return buildIds;
