@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Xml.Linq;
 
+using TeamCityChangeNotifier.Models;
+
 namespace TeamCityChangeNotifier.XmlParsers
 {
 	public class BuildXmlParser
@@ -12,12 +14,29 @@ namespace TeamCityChangeNotifier.XmlParsers
 			buildDoc = XDocument.Parse(buildXml);
 		}
 
-		public int FirstBuildId()
+		public int? DepenedencyBuildId()
 		{
-			var deps = buildDoc.Descendants("artifact-dependencies").First();
-			var dep = deps.Descendants("build").First();
-			var idValue = dep.Attributes("id").First().Value;
-			return int.Parse(idValue);
+			var deps = buildDoc.Descendants("artifact-dependencies").FirstOrDefault();
+			if (deps == null)
+			{
+				return null;
+			}
+
+			var firstBuild = deps.Descendants("build").FirstOrDefault();
+			if (firstBuild == null)
+			{
+				return null;
+			}
+
+			var idValue = firstBuild.Attribute("id").Value;
+
+			int intId;
+			var parsedId = int.TryParse(idValue, out intId);
+			if (!parsedId)
+			{
+				return null;
+			}
+			return intId;
 		}
 
 		public string BuildType()
@@ -30,6 +49,18 @@ namespace TeamCityChangeNotifier.XmlParsers
 		{
 			var buildType = buildDoc.Root.Descendants("buildType").First();
 			return buildType.Attributes("projectName").First().Value;
+		}
+
+		public BuildData GetBuildData()
+		{
+			return new BuildData
+				{
+					BuildType = BuildType(),
+					ProjectName = ProjectName(),
+					// Id = ?
+					// DateTime = ?
+					DependencyBuildId = DepenedencyBuildId()
+				};
 		}
 
 		public string Text

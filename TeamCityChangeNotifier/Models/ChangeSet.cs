@@ -8,11 +8,12 @@ namespace TeamCityChangeNotifier.Models
 		public List<ChangeData> Changes { get; set; }
 		public int PinnedBuildId { get; set; }
 		public BuildListData Builds { get; set; }
-		public string ProjectName { get; set; }
+
+		public BuildData ReleaseBuild { get; set; }
 
 		public string Summary()
 		{
-			return string.Format("Release to {0} with {1} in {2}", ProjectName, ChangeCount(), BuildCount());
+			return string.Format("Release to {0} with {1} in {2}", ReleaseBuild.ProjectName, ChangeCount(), BuildCount());
 		}
 
 		public string Details()

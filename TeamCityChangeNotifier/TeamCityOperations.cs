@@ -17,23 +17,37 @@ namespace TeamCityChangeNotifier
 		public async Task<ChangeSet> ChangesForRelease(Request request)
 		{
 			var releaseBuild = await GetBuild(request.InitialBuildId);
-			var projectName = releaseBuild.ProjectName();
+			var releaseBuildData = releaseBuild.GetBuildData();
+			releaseBuildData.Id = request.InitialBuildId; // should not be needed
 
-			var firstBuildId = releaseBuild.FirstBuildId();
-			var firstBuild = await GetBuild(firstBuildId);
-			var firstBuildType = firstBuild.BuildType();
+			var sourceBuildData = await FindSourceBuild(releaseBuildData);
 
-			var buildListData= await BuildsIdsBackToLastPin(firstBuildId, firstBuildType);
+			var buildListData = await BuildsIdsBackToLastPin(sourceBuildData);
+
 			var changeHrefs = await ReadAllChangeHrefsFromBuilds(buildListData.Ids);
 			var changes = await ReadAllChanges(changeHrefs);
 
 			return new ChangeSet
 				{
-					ProjectName = projectName,
-					PinnedBuildId = firstBuildId,
+					ReleaseBuild = releaseBuildData,
+					PinnedBuildId = sourceBuildData.Id,
 					Builds = buildListData,
 					Changes = changes
 				};
+		}
+
+		public async Task<BuildData> FindSourceBuild(BuildData releaseBuildData)
+		{
+			var sourceBuildId = releaseBuildData.DependencyBuildId;
+			if (!sourceBuildId.HasValue)
+			{
+				throw new ParseException("No source build id found");
+			}
+
+			var sourceBuild = await GetBuild(sourceBuildId.Value);
+			var sourceBuildData = sourceBuild.GetBuildData();
+			sourceBuildData.Id = sourceBuildId.Value; // should not be needed
+			return sourceBuildData;
 		}
 
 		private async Task<List<ChangeData>> ReadAllChanges(List<string> changeHrefs)
@@ -60,12 +74,21 @@ namespace TeamCityChangeNotifier
 			return hrefs;
 		}
 
-		private async Task<BuildListData> BuildsIdsBackToLastPin(int firstBuildId, string firstBuildType)
+		private async Task<BuildListData> BuildsIdsBackToLastPin(BuildData latestBuild)
 		{
-			var buildListData = await reader.ReadBuildList(firstBuildType);
+			var buildListData = await reader.ReadBuildList(latestBuild.BuildType);
 			var buildList = new BuildListXmlParser(buildListData);
 
-			return buildList.FromIdBackToLastPin(firstBuildId);
+			var result =  buildList.FromIdBackToLastPin(latestBuild.Id);
+			result.LatestBuild = latestBuild;
+
+			if (result.PreviousPinnedBuildId > 0)
+			{
+				var prevPinnedData = await GetBuild(result.PreviousPinnedBuildId);
+				result.PreviousPinned = prevPinnedData.GetBuildData();
+			}
+
+			return result;
 		}
 
 		private async Task<BuildXmlParser> GetBuild(int buildId)

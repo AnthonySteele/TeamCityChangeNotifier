@@ -20,7 +20,8 @@ namespace TeamCityChangeNotifier.XmlParsers
 			var builds = buildDoc.Root.Descendants("build");
 			var foundStartBuild = false;
 			var foundEndBuild = false;
-			var buildIds = new List<int>(); 
+			var buildIds = new List<int>();
+			int previousPinnedBuildId = 0;
 
 			foreach (var buildElement in builds)
 			{
@@ -30,6 +31,7 @@ namespace TeamCityChangeNotifier.XmlParsers
 				{
 					if ( BuildIsPinned(buildElement))
 					{
+						previousPinnedBuildId = buildId;
 						foundEndBuild = true;
 						break;
 					}
@@ -59,7 +61,8 @@ namespace TeamCityChangeNotifier.XmlParsers
 
 			return new BuildListData
 				{
-					Ids = buildIds
+					Ids = buildIds,
+					PreviousPinnedBuildId = previousPinnedBuildId
 				};
 		}
 
