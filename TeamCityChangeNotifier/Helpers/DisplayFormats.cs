@@ -1,4 +1,6 @@
-﻿namespace TeamCityChangeNotifier.Helpers
+﻿using System;
+
+namespace TeamCityChangeNotifier.Helpers
 {
 	public static class DisplayFormats
 	{
@@ -20,6 +22,20 @@
 		private static string Pluralise(int count)
 		{
 			return (count == 1) ? "" : "s";
+		}
+
+		public static string Between(DateTime from, DateTime to)
+		{
+			var elapsed = (to - from).Duration();
+
+			if (elapsed.TotalDays >= 1)
+			{
+				int days = (int)Math.Floor(elapsed.TotalDays);
+				return days + "day" + Pluralise(days);
+			}
+
+			int hours = (int)Math.Floor(elapsed.TotalHours);
+			return hours + "day" + Pluralise(hours);
 		}
 	}
 }

@@ -15,7 +15,10 @@ namespace TeamCityChangeNotifier.Models
 
 		public string Summary()
 		{
-			return string.Format("Release to {0} with {1} in {2}", ReleaseBuild.ProjectName, ChangeCount(), BuildCount());
+			var elapsed = DisplayFormats.Between(Builds.LatestBuild.Date, Builds.PreviousPinned.Date);
+
+			return string.Format("Release to {0} with {1} in {2} over {3}", 
+				ReleaseBuild.ProjectName, ChangeCount(), BuildCount(), elapsed);
 		}
 
 		public string Details()
@@ -34,12 +37,12 @@ namespace TeamCityChangeNotifier.Models
 
 		private string ChangeCount()
 		{
-			return DisplatFormats.Count(Changes.Count, "change");
+			return DisplayFormats.Count(Changes.Count, "change");
 		}
 
 		private string BuildCount()
 		{
-			return DisplatFormats.Count(Builds.Ids.Count, "build");
+			return DisplayFormats.Count(Builds.Ids.Count, "build");
 		}
 	}
 }
