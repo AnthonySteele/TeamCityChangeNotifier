@@ -7,7 +7,7 @@ namespace TeamCityChangeNotifier.Http
 {
 	public class HttpReader
 	{
-		private readonly Settings _settings = new Settings();
+		private readonly Settings settings = new Settings();
 
 		public async Task<string> ReadResponseBody(string url)
 		{
@@ -27,7 +27,7 @@ namespace TeamCityChangeNotifier.Http
 
 		public void SetBasicAuthHeader(HttpRequestMessage request)
 		{
-			request.Headers.Authorization = new AuthenticationHeaderValue("Basic", _settings.TeamcityAuthInfo);
+			request.Headers.Authorization = new AuthenticationHeaderValue("Basic", settings.TeamcityAuthInfo);
 		}
 	}
 }

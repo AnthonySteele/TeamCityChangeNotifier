@@ -1,17 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+
+using TeamCityChangeNotifier.Args;
 using TeamCityChangeNotifier.Http;
-using TeamCityChangeNotifier.Parsers;
+using TeamCityChangeNotifier.Models;
+using TeamCityChangeNotifier.XmlParsers;
 
 namespace TeamCityChangeNotifier
 {
 	public class TeamCityOperations
 	{
-		private readonly TeamCityReader _reader = new TeamCityReader();
+		private readonly TeamCityReader reader = new TeamCityReader();
 
-		public async Task<ChangeSet> ChangesForRelease(int buildId)
+		public async Task<ChangeSet> ChangesForRelease(Request request)
 		{
-			var releaseBuild = await GetBuild(buildId);
+			var releaseBuild = await GetBuild(request.InitialBuildId);
 			var projectName = releaseBuild.ProjectName();
 
 			var firstBuildId = releaseBuild.FirstBuildId();
@@ -38,7 +41,7 @@ namespace TeamCityChangeNotifier
 
 			foreach (var changeHref in changeHrefs)
 			{
-				var changeResponse = await _reader.ReadRelativeUrl(changeHref);
+				var changeResponse = await reader.ReadRelativeUrl(changeHref);
 
 				var change = parser.ReadXml(changeResponse);
 				changes.Add(change);
@@ -53,7 +56,7 @@ namespace TeamCityChangeNotifier
 
 			foreach (var buildId in buildIds)
 			{
-				var buildChangesData = await _reader.ReadBuildChanges(buildId);
+				var buildChangesData = await reader.ReadBuildChanges(buildId);
 				var changesInThisBuild = new ChangeListXmlParser(buildChangesData);
 
 				hrefs.AddRange(changesInThisBuild.ChangeHrefs());
@@ -64,7 +67,7 @@ namespace TeamCityChangeNotifier
 
 		private async Task<List<int>>  BuildsIdsBackToLastPin(int firstBuildId, string firstBuildType)
 		{
-			var buildListData = await _reader.ReadBuildList(firstBuildType);
+			var buildListData = await reader.ReadBuildList(firstBuildType);
 			var buildList = new BuildListXmlParser(buildListData);
 
 			return buildList.FromIdBackToLastPin(firstBuildId);
@@ -72,7 +75,7 @@ namespace TeamCityChangeNotifier
 
 		private async Task<BuildXmlParser> GetBuild(int buildId)
 		{
-			var releaseData = await _reader.ReadBuild(buildId);
+			var releaseData = await reader.ReadBuild(buildId);
 			return new BuildXmlParser(releaseData);
 		}
 	}

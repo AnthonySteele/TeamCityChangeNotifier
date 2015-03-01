@@ -1,5 +1,6 @@
 ﻿using System.Net.Mail;
 using TeamCityChangeNotifier.Helpers;
+using TeamCityChangeNotifier.Models;
 
 namespace TeamCityChangeNotifier.Email
 {

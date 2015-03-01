@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+
+using TeamCityChangeNotifier.Args;
 using TeamCityChangeNotifier.Email;
 
 namespace TeamCityChangeNotifier
@@ -8,32 +10,26 @@ namespace TeamCityChangeNotifier
 	{
 		static void Main(string[] args)
 		{
-			if (args.Length == 0)
+			var argsReader = new ArgsReader();
+			var request = argsReader.ReadArgs(args);
+
+			if (request.ArgsError)
 			{
-				Console.WriteLine("Please supply a teamcity build number");
+				Console.WriteLine(request.ArgsErrorMessage);
 				return;
 			}
 
-			int buildId;
-			var parsed = int.TryParse(args[0], out buildId);
-			if (!parsed)
-			{
-				var message = string.Format("The argument '{0}' is not a teamcity build number", args[0]);
-				Console.WriteLine(message);
-				return;
-			}
 
-			var task = TeamCityChangesForRelease(buildId);
+			var task = TeamCityChangesForRelease(request);
 			task.Wait();
 		}
 
-		private static async Task TeamCityChangesForRelease(int buildId)
+		private static async Task TeamCityChangesForRelease(Request request)
 		{
 			try
 			{
 				var reader = new TeamCityOperations();
-				var changes = await reader.ChangesForRelease(buildId);
-				//Console.WriteLine(changes.Details());
+				var changes = await reader.ChangesForRelease(request);
 
 				var sender = new EmailSender();
 				sender.SendNotification(changes);

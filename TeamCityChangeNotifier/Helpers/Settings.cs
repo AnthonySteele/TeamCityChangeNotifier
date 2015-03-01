@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System.Runtime.CompilerServices;
 
 namespace TeamCityChangeNotifier.Helpers
 {
@@ -15,12 +16,17 @@ namespace TeamCityChangeNotifier.Helpers
 
 		public Settings()
 		{
-			TeamcityAuthInfo = ConfigurationManager.AppSettings["TeamcityAuthInfo"];
-			TeamcityUrl = ConfigurationManager.AppSettings["TeamcityUrl"];
+			TeamcityAuthInfo = Read("TeamcityAuthInfo");
+			TeamcityUrl = Read("TeamcityUrl");
 			TeamcityRestUrl = UriPath.Combine(TeamcityUrl, "httpAuth/app/rest");
 
-			SmtpHost = ConfigurationManager.AppSettings["SmtpHost"];
-			DestinationEmail = ConfigurationManager.AppSettings["DestinationEmail"];
+			SmtpHost = Read("SmtpHost");
+			DestinationEmail = ("DestinationEmail");
+		}
+
+		private string Read(string key)
+		{
+			return ConfigurationManager.AppSettings[key];
 		}
 	}
 }

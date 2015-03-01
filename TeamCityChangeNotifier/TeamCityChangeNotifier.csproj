@@ -41,13 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChangeData.cs" />
-    <Compile Include="ChangeSet.cs" />
+    <Compile Include="Args\ArgsReader.cs" />
+    <Compile Include="Args\Request.cs" />
+    <Compile Include="Models\ChangeData.cs" />
+    <Compile Include="Models\ChangeSet.cs" />
     <Compile Include="Email\EmailSender.cs" />
-    <Compile Include="Parsers\ChangeDataParser.cs" />
-    <Compile Include="Parsers\BuildListXmlParser.cs" />
-    <Compile Include="Parsers\BuildXmlParser.cs" />
-    <Compile Include="Parsers\ChangeListXmlParser.cs" />
+    <Compile Include="XmlParsers\ChangeDataParser.cs" />
+    <Compile Include="XmlParsers\BuildListXmlParser.cs" />
+    <Compile Include="XmlParsers\BuildXmlParser.cs" />
+    <Compile Include="XmlParsers\ChangeListXmlParser.cs" />
     <Compile Include="Http\HttpReader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
