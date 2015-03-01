@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 
+using TeamCityChangeNotifier.Helpers;
+
 namespace TeamCityChangeNotifier.Models
 {
 	public class ChangeSet
@@ -32,19 +34,12 @@ namespace TeamCityChangeNotifier.Models
 
 		private string ChangeCount()
 		{
-			if (Changes.Count == 0)
-			{
-				return "No changes";
-			}
-
-			var changeWord = (Changes.Count == 1) ? "change" : "changes";
-			return string.Format("{0} {1}", Changes.Count, changeWord);
+			return DisplatFormats.Count(Changes.Count, "change");
 		}
 
 		private string BuildCount()
 		{
-			var buildWord = (Builds.Ids.Count == 1) ? "build" : "builds";
-			return string.Format("{0} {1}", Builds.Ids.Count, buildWord);
+			return DisplatFormats.Count(Builds.Ids.Count, "build");
 		}
 	}
 }
