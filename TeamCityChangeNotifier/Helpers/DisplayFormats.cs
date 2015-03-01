@@ -31,11 +31,11 @@ namespace TeamCityChangeNotifier.Helpers
 			if (elapsed.TotalDays >= 1)
 			{
 				int days = (int)Math.Floor(elapsed.TotalDays);
-				return days + "day" + Pluralise(days);
+				return days + " day" + Pluralise(days);
 			}
 
 			int hours = (int)Math.Floor(elapsed.TotalHours);
-			return hours + "day" + Pluralise(hours);
+			return hours + " hour" + Pluralise(hours);
 		}
 	}
 }
