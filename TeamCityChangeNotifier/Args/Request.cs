@@ -6,7 +6,6 @@
 		public string ArgsErrorMessage { get; set; }
 
 		public int InitialBuildId { get; set; }
-		public string SourceBuildTitleText { get; set; }
 
 		public static Request Error(string message)
 		{

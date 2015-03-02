@@ -17,17 +17,11 @@
 				return Request.Error(message);
 			}
 
-			var sourceBuildTitleText = "Build";
-			if (args.Length >= 2)
-			{
-				sourceBuildTitleText = args[1];
-			}
 
 			return new Request
 				{
 					ArgsError = false,
-					InitialBuildId = buildId,
-					SourceBuildTitleText = sourceBuildTitleText
+					InitialBuildId = buildId
 				};
 		}
 	}
