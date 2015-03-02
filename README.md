@@ -7,15 +7,15 @@ As it turns out, our deployment infrastructure is more *sophisticated* so it's h
 This involves walking along the TeamCity rest Api a bit, since this build doesn't itself contain the changes, it releases artefacts from an earlier build which is a dependency. The "release" is the last build in the chain. The first in the chain, the "build and unit test" actually gets the code changes. And the changes being released are spread over multiple builds, back to just after the previous pinned build. So we have to:  
 
 1. First read the released build and get the id of the "first build" dependency.
-2. Read the details of the  first build, particularly the `id` and `buildTypeId`.
+2. Read the details of the  first build, particularly the `id` and `buildTypeId`. 
 3. Read all the builds in the first build's `buildTypeId`, in order to get a range of builds from this back to just after the previous pinned build.
 4. Read changes on all the builds in range.
 
 The steps to get it working are:  
 1.  Build this program.  
-2.  Configure the `app.config` with suitable values. You should know the teamcity url and smtp settings. You will need a teamcity user name and password for authentication. There will need to be put on the commandline or in the app.config.
-3.  Call it as: `TeamCityChangeNotifier.exe buildId`  
-4. Find the TeamCity internal id of the released build. If you are looking at a build result in a browser, it is the number in the url right after `?buildId=`. In  TeamCity build automation it is `build.number`.  
+2.  Configure the `app.config` with suitable values. You should know the teamcity url and smtp settings. You will need a teamcity user name and password for authentication. There will need to be put on the commandline or in the app.config.  
+3. Find the TeamCity internal id of the released build. If you are looking at a build result in a browser, it is the number in the url right after `?buildId=`. In  TeamCity build automation it is `build.number`.  
+4.  Try and call it.   
 5. Integrate into TeamCity as last step in the release?
 
 ## Commandline Params
