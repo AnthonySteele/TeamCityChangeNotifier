@@ -6,6 +6,8 @@
 		public string ArgsErrorMessage { get; set; }
 
 		public int InitialBuildId { get; set; }
+		public string TeamCityUser { get; set; }
+		public string TeamCityPassword { get; set; }
 
 		public static Request Error(string message)
 		{
