@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using TeamCityChangeNotifier.Args;
 using TeamCityChangeNotifier.Email;
+using TeamCityChangeNotifier.Http;
 
 namespace TeamCityChangeNotifier
 {
@@ -19,6 +20,7 @@ namespace TeamCityChangeNotifier
 				return;
 			}
 
+			TeamCityAuth.Request = request;
 
 			var task = TeamCityChangesForRelease(request);
 			task.Wait();

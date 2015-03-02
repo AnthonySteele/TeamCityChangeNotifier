@@ -4,7 +4,6 @@ namespace TeamCityChangeNotifier.Helpers
 {
 	public class ConfigSettings
 	{
-		public string TeamCityAuthInfo { get; private set; }
 		public string TeamCityUser { get; private set; }
 		public string TeamCityPassword { get; private set; }
 
@@ -17,7 +16,6 @@ namespace TeamCityChangeNotifier.Helpers
 
 		public ConfigSettings()
 		{
-			TeamCityAuthInfo = Read("TeamcityAuthInfo");
 			TeamCityUser = Read("TeamCityUser");
 			TeamCityPassword = Read("TeamCityPassword");
 
