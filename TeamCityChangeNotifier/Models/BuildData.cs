@@ -5,7 +5,7 @@ namespace TeamCityChangeNotifier.Models
 	public class BuildData
 	{
 		public int Id { get; set; }
-		public DateTime Date { get; set; }
+		public DateTime FinishDate { get; set; }
 
 		public string BuildType { get; set; }
 		public string ProjectName { get; set; }

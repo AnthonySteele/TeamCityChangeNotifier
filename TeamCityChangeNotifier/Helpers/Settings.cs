@@ -21,7 +21,7 @@ namespace TeamCityChangeNotifier.Helpers
 			TeamcityRestUrl = UriPath.Combine(TeamcityUrl, "httpAuth/app/rest");
 
 			SmtpHost = Read("SmtpHost");
-			DestinationEmail = ("DestinationEmail");
+			DestinationEmail = Read("DestinationEmail");
 		}
 
 		private string Read(string key)

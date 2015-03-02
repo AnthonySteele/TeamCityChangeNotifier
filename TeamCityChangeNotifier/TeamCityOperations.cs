@@ -18,7 +18,6 @@ namespace TeamCityChangeNotifier
 		{
 			var releaseBuild = await GetBuild(request.InitialBuildId);
 			var releaseBuildData = releaseBuild.GetBuildData();
-			releaseBuildData.Id = request.InitialBuildId; // should not be needed
 
 			var sourceBuildData = await FindSourceBuild(releaseBuildData);
 

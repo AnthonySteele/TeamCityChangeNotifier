@@ -9,12 +9,8 @@ namespace TeamCityChangeNotifier.Helpers
 	{
 		public static async Task<List<U>> ReadParallel<T, U>(List<T> inputs, Func<T, Task<U>> read)
 		{
-			var readTasks = new List<Task<U>>();
-
-			foreach (var input in inputs)
-			{
-				readTasks.Add(read(input));
-			}
+			var readTasks = inputs.Select(read)
+				.ToList();
 
 			var results = await Task.WhenAll(readTasks);
 			return results.ToList();
