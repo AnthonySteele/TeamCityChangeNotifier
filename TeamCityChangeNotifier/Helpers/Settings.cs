@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 
 namespace TeamCityChangeNotifier.Helpers
 {
@@ -18,8 +19,8 @@ namespace TeamCityChangeNotifier.Helpers
 		public Settings()
 		{
 			TeamCityAuthInfo = Read("TeamcityAuthInfo");
-			TeamCityUser = Read("TeamCityUser");
-			TeamCityPassword = Read("TeamCityPassword");
+			TeamCityUser = ReadEnvOrConfig("TeamCityUser");
+			TeamCityPassword = ReadEnvOrConfig("TeamCityPassword");
 
 			TeamCityUrl = Read("TeamcityUrl");
 			TeamCityRestUrl = UriPath.Combine(TeamCityUrl, "httpAuth/app/rest");
@@ -31,6 +32,12 @@ namespace TeamCityChangeNotifier.Helpers
 		private string Read(string key)
 		{
 			return ConfigurationManager.AppSettings[key];
+		}
+
+		private static string ReadEnvOrConfig(string key)
+		{
+			var valueFromEnv = Environment.GetEnvironmentVariable(key);
+			return valueFromEnv ?? ConfigurationManager.AppSettings[key];
 		}
 	}
 }
