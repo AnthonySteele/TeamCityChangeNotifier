@@ -45,6 +45,7 @@
     <Compile Include="Args\Request.cs" />
     <Compile Include="Helpers\DisplayFormats.cs" />
     <Compile Include="Helpers\Tasks.cs" />
+    <Compile Include="Http\TeamCityAuth.cs" />
     <Compile Include="Models\BuildData.cs" />
     <Compile Include="Models\BuildListData.cs" />
     <Compile Include="Models\ChangeData.cs" />

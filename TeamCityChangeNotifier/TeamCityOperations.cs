@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,23 +17,22 @@ namespace TeamCityChangeNotifier
 
 		public async Task<ChangeSet> ChangesForRelease(Request request)
 		{
-			var releaseBuild = await GetBuild(request.InitialBuildId);
-			var releaseBuildData = releaseBuild.GetBuildData();
-
+			var releaseBuildData = await ReadBuild(request.InitialBuildId);
 			var sourceBuildData = await FindSourceBuild(releaseBuildData);
-
 			var buildListData = await BuildsIdsBackToLastPin(sourceBuildData);
-
 			var changeHrefs = await ReadAllChangeHrefsFromBuilds(buildListData.Ids);
 			var changes = await ReadAllChanges(changeHrefs);
 
-			return new ChangeSet
+			var changeSet = new ChangeSet
 				{
 					ReleaseBuild = releaseBuildData,
-					PinnedBuildId = sourceBuildData.Id,
 					Builds = buildListData,
 					Changes = changes
 				};
+
+			Console.WriteLine("Notifying on " + changeSet.Summary());
+
+			return changeSet;
 		}
 
 		public async Task<BuildData> FindSourceBuild(BuildData releaseBuildData)
@@ -43,9 +43,7 @@ namespace TeamCityChangeNotifier
 				throw new ParseException("No source build id found");
 			}
 
-			var sourceBuild = await GetBuild(sourceBuildId.Value);
-			var sourceBuildData = sourceBuild.GetBuildData();
-			sourceBuildData.Id = sourceBuildId.Value; // should not be needed
+			var sourceBuildData = await ReadBuild(sourceBuildId.Value);
 			return sourceBuildData;
 		}
 
@@ -83,17 +81,24 @@ namespace TeamCityChangeNotifier
 
 			if (result.PreviousPinnedBuildId > 0)
 			{
-				var prevPinnedData = await GetBuild(result.PreviousPinnedBuildId);
-				result.PreviousPinned = prevPinnedData.GetBuildData();
+				var prevPinnedData = await ReadBuild(result.PreviousPinnedBuildId);
+				result.PreviousPinned = prevPinnedData;
 			}
 
 			return result;
 		}
 
-		private async Task<BuildXmlParser> GetBuild(int buildId)
+		private async Task<BuildData> ReadBuild(int buildId)
 		{
 			var releaseData = await reader.ReadBuild(buildId);
-			return new BuildXmlParser(releaseData);
+			var parser = new BuildXmlParser(releaseData);
+			var data = parser.GetBuildData();
+
+			var message = string.Format("Read build {0} in {1} - {2}", 
+				data.Id, data.ProjectName, data.BuildType);
+			Console.WriteLine(message);
+
+			return data;
 		}
 	}
 }

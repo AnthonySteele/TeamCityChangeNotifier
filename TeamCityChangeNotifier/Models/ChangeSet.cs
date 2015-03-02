@@ -8,7 +8,6 @@ namespace TeamCityChangeNotifier.Models
 	public class ChangeSet
 	{
 		public List<ChangeData> Changes { get; set; }
-		public int PinnedBuildId { get; set; }
 		public BuildListData Builds { get; set; }
 
 		public BuildData ReleaseBuild { get; set; }

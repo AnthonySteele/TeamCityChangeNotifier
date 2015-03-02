@@ -66,14 +66,22 @@ namespace TeamCityChangeNotifier.XmlParsers
 			return DateParser.Parse(dateText);
 		}
 
+		private DateTime StartDate()
+		{
+			var finishDate = buildDoc.Root.Descendants("startDate").First();
+			var dateText = finishDate.Value;
+			return DateParser.Parse(dateText);
+		}
+		
 		public BuildData GetBuildData()
 		{
 			return new BuildData
 				{
+					Id = Id(),
+					StartDate = StartDate(),
+					FinishDate = FinishDate(),
 					BuildType = BuildType(),
 					ProjectName = ProjectName(),
-					Id = Id(),
-					FinishDate = FinishDate(),
 					DependencyBuildId = DepenedencyBuildId()
 				};
 		}

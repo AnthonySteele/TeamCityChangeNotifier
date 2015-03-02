@@ -1,13 +1,12 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using TeamCityChangeNotifier.Helpers;
 
 namespace TeamCityChangeNotifier.Http
 {
 	public class HttpReader
 	{
-		private readonly Settings settings = new Settings();
+		private readonly TeamCityAuth authInfo = new TeamCityAuth();
 
 		public async Task<string> ReadResponseBody(string url)
 		{
@@ -20,14 +19,16 @@ namespace TeamCityChangeNotifier.Http
 		private async Task<HttpResponseMessage> ReadUrl(string url)
 		{
 			HttpClient client = new HttpClient();
+
 			var request = new HttpRequestMessage(HttpMethod.Get, url);
-			SetBasicAuthHeader(request);
+			request.Headers.Authorization = MakeBasicAuthHeader();
+			
 			return await client.SendAsync(request);
 		}
 
-		public void SetBasicAuthHeader(HttpRequestMessage request)
+		private AuthenticationHeaderValue MakeBasicAuthHeader()
 		{
-			request.Headers.Authorization = new AuthenticationHeaderValue("Basic", settings.TeamcityAuthInfo);
+			return new AuthenticationHeaderValue("Basic", authInfo.AuthInfo());
 		}
 	}
 }

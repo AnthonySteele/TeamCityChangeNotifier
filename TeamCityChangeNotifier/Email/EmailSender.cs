@@ -1,4 +1,5 @@
-﻿using System.Net.Mail;
+﻿using System;
+using System.Net.Mail;
 using TeamCityChangeNotifier.Helpers;
 using TeamCityChangeNotifier.Models;
 
@@ -18,6 +19,8 @@ namespace TeamCityChangeNotifier.Email
 			SmtpClient client = new SmtpClient();
 			client.Host = settings.SmtpHost;
 			client.Send(mail);
+
+			Console.WriteLine("Sent notification to " + settings.DestinationEmail);
 		}
 	}
 }

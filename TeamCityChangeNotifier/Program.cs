@@ -22,6 +22,8 @@ namespace TeamCityChangeNotifier
 
 			var task = TeamCityChangesForRelease(request);
 			task.Wait();
+
+			Console.ReadLine();
 		}
 
 		private static async Task TeamCityChangesForRelease(Request request)

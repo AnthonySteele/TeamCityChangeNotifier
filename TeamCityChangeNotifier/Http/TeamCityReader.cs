@@ -11,20 +11,20 @@ namespace TeamCityChangeNotifier.Http
 		public async Task<string> ReadBuildList(string buildName)
 		{
 			var id = "id:" + buildName;
-			var url = UriPath.Combine(settings.TeamcityRestUrl, "buildTypes", id, "builds");
+			var url = UriPath.Combine(settings.TeamCityRestUrl, "buildTypes", id, "builds");
 			return await reader.ReadResponseBody(url);
 		}
 
 		public async Task<string> ReadBuild(int buildId)
 		{
-			var url = UriPath.Combine(settings.TeamcityRestUrl, "builds", buildId.ToString());
+			var url = UriPath.Combine(settings.TeamCityRestUrl, "builds", buildId.ToString());
 			return await reader.ReadResponseBody(url);
 		}
 
 		public async Task<string> ReadBuildChanges(int buildId)
 		{
 			var id = string.Format("?locator=build:(id:{0})",buildId);
-			var url = UriPath.Combine(settings.TeamcityRestUrl, "changes", id);
+			var url = UriPath.Combine(settings.TeamCityRestUrl, "changes", id);
 			return await reader.ReadResponseBody(url);
 		}
 
@@ -32,13 +32,13 @@ namespace TeamCityChangeNotifier.Http
 		public async Task<string> ReadChange(int changeId)
 		{
 			var id = "id:" + changeId;
-			var url = UriPath.Combine(settings.TeamcityRestUrl, "changes", id);
+			var url = UriPath.Combine(settings.TeamCityRestUrl, "changes", id);
 			return await reader.ReadResponseBody(url);
 		}
 
 		public async Task<string> ReadRelativeUrl(string relativeUrl)
 		{
-			var url = UriPath.Combine(settings.TeamcityUrl, relativeUrl);
+			var url = UriPath.Combine(settings.TeamCityUrl, relativeUrl);
 			return await reader.ReadResponseBody(url);
 		}
 	}
