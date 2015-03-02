@@ -17,7 +17,15 @@ The steps to get it working are:
 3.  Call it as: `TeamCityChangeNotifier.exe buildId`  
 4. Find the TeamCity internal id of the released build. If you are looking at a build result in a browser, it is the number in the url right after `?buildId=`. In  TeamCity build automation it is `build.number`.  
 5. Integrate into TeamCity as last step in the release?
+
+## Commandline Params
  
+`id:number` The number of the build released. Must be specified.
+
+`u:username` The user name for TeamCity Auth. A user name must be specified in `app.config` or on the commandline. 
+
+`pw:password` The password for TeamCity Auth. A password must be specified in `app.config` or on the commandline. User name and password don't have to come from the same source.
+
 
 ## Sample output
 
