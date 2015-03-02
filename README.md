@@ -22,7 +22,7 @@ The steps to get it working are:
 ## Sample output
 
 ```
-Release to Catalogue with 2 changes in 1 build
+Release to Catalogue with 2 changes in 1 build over 2 days
 
 anthony.steele on Tue 03/02/2015 15:08
  HttpRequestException as release error not warming
