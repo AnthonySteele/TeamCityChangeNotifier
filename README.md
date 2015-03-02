@@ -16,11 +16,11 @@ The steps to get it working are:
 2.  Configure the `app.config` with suitable values. You should know the teamcity url and smtp settings. You will need a teamcity user name and password for authentication. There will need to be put on the commandline or in the app.config.  
 3. Find the TeamCity internal id of the released build. If you are looking at a build result in a browser, it is the number in the url right after `?buildId=`. In  TeamCity build automation it is `build.number`.  
 4.  Try and call it.   
-5. Integrate into TeamCity as last step in the release?
+5. Integrate into TeamCity as last step in the release.
 
 ## Commandline Params
  
- example: `TeamCityChangeNotifier.exe id:21345 pw:hunter2`
+ **Example**: `TeamCityChangeNotifier.exe id:21345 pw:hunter2`
  
 `id:number` The number of the build released. Must be specified.
 
