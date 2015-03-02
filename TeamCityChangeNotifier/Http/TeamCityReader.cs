@@ -5,7 +5,7 @@ namespace TeamCityChangeNotifier.Http
 {
 	public class TeamCityReader
 	{
-		private readonly Settings settings = new Settings();
+		private readonly ConfigSettings settings = new ConfigSettings();
 		private readonly HttpReader reader = new HttpReader();
 
 		public async Task<string> ReadBuildList(string buildName)

@@ -6,7 +6,7 @@ namespace TeamCityChangeNotifier.Http
 {
 	public class TeamCityAuth
 	{
-		private readonly Settings settings = new Settings();
+		private readonly ConfigSettings settings = new ConfigSettings();
 
 		public string AuthInfo()
 		{

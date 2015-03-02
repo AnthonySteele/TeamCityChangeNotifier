@@ -7,7 +7,7 @@ namespace TeamCityChangeNotifier.Email
 {
 	public class EmailSender
 	{
-		private static readonly Settings settings = new Settings();
+		private static readonly ConfigSettings settings = new ConfigSettings();
 		private const string Sender = "TeamcityChanges@7digital.com";
 
 		public void SendNotification(ChangeSet changeSet)
