@@ -14,12 +14,9 @@ namespace TeamCityChangeNotifier.Helpers
 		/// Get the outputs in parallel
 		/// e.g. In parallel, turn a list of Urls, (T is string) to responses 
 		/// (U is HttpResponseMessage and the read func wraps a HTTP get)
+		/// 
+		/// var responses = await Tasks.ReadParallel(urls, url => ReadUrl(url));
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <typeparam name="U"></typeparam>
-		/// <param name="inputs"></param>
-		/// <param name="read"></param>
-		/// <returns></returns>
 		public static async Task<List<U>> ReadParallel<T, U>(List<T> inputs, Func<T, Task<U>> read)
 		{
 			var readTasks = inputs.Select(read)
