@@ -8,7 +8,7 @@ namespace TeamCityChangeNotifier.Helpers
 		{
 			if (count == 0)
 			{
-				return "No " + word + "s";
+				return "no " + word + "s";
 			}
 
 			return string.Format("{0} {1}", count, Pluralise(word, count));

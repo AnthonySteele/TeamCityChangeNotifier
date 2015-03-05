@@ -31,7 +31,7 @@ namespace TeamCityChangeNotifier.Models
 				result.AppendLine();
 			}
 
-			return result.ToString();
+			return result.ToString().Trim();
 		}
 
 		private string ChangeCount()

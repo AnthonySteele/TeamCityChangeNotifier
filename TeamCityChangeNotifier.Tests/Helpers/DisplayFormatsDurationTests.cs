@@ -7,7 +7,7 @@ using TeamCityChangeNotifier.Helpers;
 namespace TeamCityChangeNotifier.Tests.Helpers
 {
 	[TestFixture]
-	public class DisplayFormatsTests
+	public class DisplayFormatsDurationTests
 	{
 		[Test]
 		public void OneHourBetween()
