@@ -56,7 +56,7 @@ namespace TeamCityChangeNotifier.XmlParsers
 
 			if (!foundEndBuild)
 			{
-				throw new ParseException("Did not find previous pinned build");
+				throw new ParseException("Did not find previous pinned build after Id " + firstBuildId);
 			}
 
 			return new BuildListData
