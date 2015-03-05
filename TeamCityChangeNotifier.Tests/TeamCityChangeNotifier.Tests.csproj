@@ -46,6 +46,7 @@
     <Compile Include="XmlParsers\BuildListXmlParserTests.cs" />
     <Compile Include="XmlParsers\BuildXmlParserTests.cs" />
     <Compile Include="XmlParsers\ChangeDataParserTests.cs" />
+    <Compile Include="XmlParsers\ChangeListXmlParserTests.cs" />
     <Compile Include="XmlParsers\DateParserTests.cs" />
   </ItemGroup>
   <ItemGroup>

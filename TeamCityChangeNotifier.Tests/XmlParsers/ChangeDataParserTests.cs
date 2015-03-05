@@ -14,7 +14,7 @@ namespace TeamCityChangeNotifier.Tests.XmlParsers
 	<vcsRootInstance id=""234"" vcs-root-id=""myVcs"" name=""mybuild"" href=""/httpAuth/app/rest/vcs-root-instances/id:1234""/></change>";
 
 		[Test]
-		public void CanParseChanges()
+		public void CanParseChangeData()
 		{
 			var parser = new ChangeDataParser();
 
