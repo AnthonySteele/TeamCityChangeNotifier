@@ -25,7 +25,7 @@ namespace TeamCityChangeNotifier.Tests.Models
 		[Test]
 		public void HasOneChangeSummary()
 		{
-			var changeSet = MakeChangeSet();
+			var changeSet = MakeChangeSetWithOneChange();
 			Assert.That(changeSet.Summary(), Is.EqualTo("Release to Bar with 1 change in 1 build over 2 hours"));
 		}
 
@@ -38,11 +38,11 @@ namespace TeamCityChangeNotifier.Tests.Models
 anthony on Tue 05/05/2015 00:00
 this is a change";
 
-			var changeSet = MakeChangeSet();
+			var changeSet = MakeChangeSetWithOneChange();
 			Assert.That(changeSet.Details(), Is.EqualTo(expected));
 		}
 
-		private ChangeSet MakeChangeSet()
+		private ChangeSet MakeChangeSetWithOneChange()
 		{
 			var result = MakeEmptyChangeSet();
 			result.Builds.Ids.Add(12345);
