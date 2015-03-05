@@ -21,7 +21,48 @@ namespace TeamCityChangeNotifier.Tests.Models
 			var changeSet = MakeEmptyChangeSet();
 			Assert.That(changeSet.Details(), Is.EqualTo("Release to Bar with no changes in no builds over 0 hours"));
 		}
-		
+
+		[Test]
+		public void HasOneChangeSummary()
+		{
+			var changeSet = MakeChangeSet();
+			Assert.That(changeSet.Summary(), Is.EqualTo("Release to Bar with 1 change in 1 build over 2 hours"));
+		}
+
+		[Test]
+		public void HasOneChangeDetails()
+		{
+			const string expected = 
+@"Release to Bar with 1 change in 1 build over 2 hours
+
+anthony on Tue 05/05/2015 00:00
+this is a change";
+
+			var changeSet = MakeChangeSet();
+			Assert.That(changeSet.Details(), Is.EqualTo(expected));
+		}
+
+		private ChangeSet MakeChangeSet()
+		{
+			var result = MakeEmptyChangeSet();
+			result.Builds.Ids.Add(12345);
+			result.Builds.PreviousPinned.FinishDate = result.Builds.LatestBuild.FinishDate.AddHours(-2);
+
+			result.Changes.Add(MakeChangeData());
+			return result;
+		}
+
+		private ChangeData MakeChangeData()
+		{
+			return new ChangeData
+			{
+				Id = 123,
+				Author = "anthony",
+				Message = "this is a change",
+				Date = new DateTime(2015, 5, 5)
+			};
+		}
+
 		private ChangeSet MakeEmptyChangeSet()
 		{
 			return new ChangeSet

@@ -1,7 +1,4 @@
-﻿using System;
-
-using NUnit.Framework;
-
+﻿using NUnit.Framework;
 using TeamCityChangeNotifier.Helpers;
 
 namespace TeamCityChangeNotifier.Tests.Helpers
