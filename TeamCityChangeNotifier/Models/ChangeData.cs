@@ -11,7 +11,7 @@ namespace TeamCityChangeNotifier.Models
 
 		public string Details()
 		{
-			return string.Format("{0} on {1:ddd} {1:g}\r\n{2}", Author, Date,  Message);
+			return string.Format("{0} on {1:ddd} {1:g}{2}{3}", Author, Date, Environment.NewLine,  Message);
 		}
 	}
 }
