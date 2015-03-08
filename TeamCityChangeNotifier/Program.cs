@@ -20,8 +20,6 @@ namespace TeamCityChangeNotifier
 				return;
 			}
 
-			TeamCityAuth.Request = request;
-
 			var task = TeamCityChangesForRelease(request);
 			task.Wait();
 
@@ -32,8 +30,9 @@ namespace TeamCityChangeNotifier
 		{
 			try
 			{
-				var reader = new TeamCityOperations();
-				var changes = await reader.ChangesForRelease(request);
+				var teamCityOperations = BuildTeamCityOperations(request);
+
+				var changes = await teamCityOperations.ChangesForRelease();
 
 				var sender = new EmailSender();
 				sender.SendNotification(changes);
@@ -47,6 +46,12 @@ namespace TeamCityChangeNotifier
 				Console.WriteLine("failed");
 				Console.WriteLine(ex.Message);
 			}
+		}
+
+		private static TeamCityOperations BuildTeamCityOperations(Request request)
+		{
+			var teamCityReader = new TeamCityReader(new HttpReader(new TeamCityAuth(request)));
+			return new TeamCityOperations(teamCityReader, request);
 		}
 	}
 }

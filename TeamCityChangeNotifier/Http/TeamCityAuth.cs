@@ -8,9 +8,13 @@ namespace TeamCityChangeNotifier.Http
 {
 	public class TeamCityAuth
 	{
-		private readonly ConfigSettings settings = new ConfigSettings();
+		private readonly ConfigSettings _settings = new ConfigSettings();
+		private readonly Request _request;
 
-		public static Request Request { get; set; }
+		public TeamCityAuth(Request request)
+		{
+			_request = request;
+		}
 
 		public string AuthInfo()
 		{
@@ -34,14 +38,14 @@ namespace TeamCityChangeNotifier.Http
 
 		private string ReadTeamCityUser()
 		{
-			if (!string.IsNullOrEmpty(settings.TeamCityUser))
+			if (_request != null)
 			{
-				return settings.TeamCityUser;
+				return _request.TeamCityUser;
 			}
 
-			if (Request != null)
+			if (!string.IsNullOrEmpty(_settings.TeamCityUser))
 			{
-				return Request.TeamCityUser;
+				return _settings.TeamCityUser;
 			}
 
 			return null;
@@ -49,14 +53,14 @@ namespace TeamCityChangeNotifier.Http
 
 		private string ReadTeamCityPassword()
 		{
-			if (!string.IsNullOrEmpty(settings.TeamCityPassword))
+			if (_request != null)
 			{
-				return settings.TeamCityPassword;
+				return _request.TeamCityPassword;
 			}
 
-			if (Request != null)
+			if (!string.IsNullOrEmpty(_settings.TeamCityPassword))
 			{
-				return Request.TeamCityPassword;
+				return _settings.TeamCityPassword;
 			}
 
 			return null;

@@ -8,16 +8,16 @@ namespace TeamCityChangeNotifier.XmlParsers
 {
 	public class BuildListXmlParser
 	{
-		private readonly XDocument buildDoc;
+		private readonly XDocument _buildDoc;
 
 		public BuildListXmlParser(string buildXml)
 		{
-			buildDoc = XDocument.Parse(buildXml);
+			_buildDoc = XDocument.Parse(buildXml);
 		}
 
 		public BuildListData FromIdBackToLastPin(int firstBuildId)
 		{
-			var builds = buildDoc.Root.Descendants("build");
+			var builds = _buildDoc.Root.Descendants("build");
 			var foundStartBuild = false;
 			var foundEndBuild = false;
 			var buildIds = new List<int>();

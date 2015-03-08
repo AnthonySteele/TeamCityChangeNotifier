@@ -9,6 +9,5 @@ namespace TeamCityChangeNotifier.Models
 		public BuildData PreviousPinned { get; set; }
 
 		public List<int> Ids { get; set; }
-
 	}
 }

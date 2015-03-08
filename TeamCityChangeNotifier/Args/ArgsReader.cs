@@ -7,7 +7,6 @@
 			int buildId = 0;
 			string teamcityUser = null;
 			string teamcityPassword = null;
-			string pw = null;
 			
 			foreach (var arg in args)
 			{

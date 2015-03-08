@@ -6,7 +6,13 @@ namespace TeamCityChangeNotifier.Http
 {
 	public class HttpReader
 	{
-		private readonly TeamCityAuth authInfo = new TeamCityAuth();
+		private readonly HttpClient _client = new HttpClient();
+		private readonly TeamCityAuth _authInfo;
+
+		public HttpReader(TeamCityAuth authInfo)
+		{
+			_authInfo = authInfo;
+		}
 
 		public async Task<string> ReadResponseBody(string url)
 		{
@@ -18,17 +24,16 @@ namespace TeamCityChangeNotifier.Http
 
 		private async Task<HttpResponseMessage> ReadUrl(string url)
 		{
-			HttpClient client = new HttpClient();
 
 			var request = new HttpRequestMessage(HttpMethod.Get, url);
 			request.Headers.Authorization = MakeBasicAuthHeader();
-			
-			return await client.SendAsync(request);
+
+			return await _client.SendAsync(request);
 		}
 
 		private AuthenticationHeaderValue MakeBasicAuthHeader()
 		{
-			return new AuthenticationHeaderValue("Basic", authInfo.AuthInfo());
+			return new AuthenticationHeaderValue("Basic", _authInfo.AuthInfo());
 		}
 	}
 }

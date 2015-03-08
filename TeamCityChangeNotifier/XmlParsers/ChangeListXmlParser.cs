@@ -5,17 +5,17 @@ namespace TeamCityChangeNotifier.XmlParsers
 {
 	public class ChangeListXmlParser
 	{
-		private readonly XDocument buildDoc;
+		private readonly XDocument _buildDoc;
 
 		public ChangeListXmlParser(string buildXml)
 		{
-			buildDoc = XDocument.Parse(buildXml);
+			_buildDoc = XDocument.Parse(buildXml);
 		}
 
 		public List<string> ChangeHrefs()
 		{
 			var results = new List<string>();
-			var changes = buildDoc.Root.Descendants("change");
+			var changes = _buildDoc.Root.Descendants("change");
 
 			foreach (var changeElement in changes)
 			{

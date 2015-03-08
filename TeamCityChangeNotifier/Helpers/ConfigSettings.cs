@@ -12,7 +12,7 @@ namespace TeamCityChangeNotifier.Helpers
 
 		public string SmtpHost { get; private set; }
 		public string DestinationEmail { get; private set; }
-		public int TestBuildId { get; set; }
+		public string SenderEmail { get; private set; }
 
 		public ConfigSettings()
 		{
@@ -24,6 +24,7 @@ namespace TeamCityChangeNotifier.Helpers
 
 			SmtpHost = Read("SmtpHost");
 			DestinationEmail = Read("DestinationEmail");
+			SenderEmail = Read("SenderEmail");
 		}
 
 		private string Read(string key)

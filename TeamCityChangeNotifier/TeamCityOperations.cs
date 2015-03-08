@@ -13,11 +13,18 @@ namespace TeamCityChangeNotifier
 {
 	public class TeamCityOperations
 	{
-		private readonly TeamCityReader reader = new TeamCityReader();
+		private readonly TeamCityReader _reader;
+		private readonly Request _request;
 
-		public async Task<ChangeSet> ChangesForRelease(Request request)
+		public TeamCityOperations(TeamCityReader reader, Request request)
 		{
-			var releaseBuildData = await ReadBuild(request.InitialBuildId);
+			_request = request;
+			_reader = reader; 
+		}
+
+		public async Task<ChangeSet> ChangesForRelease()
+		{
+			var releaseBuildData = await ReadBuild(_request.InitialBuildId);
 			var sourceBuildData = await FindSourceBuild(releaseBuildData);
 			var buildListData = await BuildsIdsBackToLastPin(sourceBuildData);
 			var changeHrefs = await ReadAllChangeHrefsFromBuilds(buildListData.Ids);
@@ -49,7 +56,7 @@ namespace TeamCityChangeNotifier
 
 		private async Task<List<ChangeData>> ReadAllChanges(List<string> changeHrefs)
 		{
-			var changeResponses = await Tasks.ReadParallel(changeHrefs, url => reader.ReadRelativeUrl(url));
+			var changeResponses = await Tasks.ReadParallel(changeHrefs, url => _reader.ReadRelativeUrl(url));
 
 			var parser = new ChangeDataParser();
 			return changeResponses
@@ -59,7 +66,7 @@ namespace TeamCityChangeNotifier
 
 		private async Task<List<string>> ReadAllChangeHrefsFromBuilds(List<int> buildIds)
 		{
-			var buildChangesDataList = await Tasks.ReadParallel(buildIds, id => reader.ReadBuildChanges(id));
+			var buildChangesDataList = await Tasks.ReadParallel(buildIds, id => _reader.ReadBuildChanges(id));
 
 			var hrefs = new List<string>();
 			foreach (var buildChangesData in buildChangesDataList)
@@ -73,7 +80,7 @@ namespace TeamCityChangeNotifier
 
 		private async Task<BuildListData> BuildsIdsBackToLastPin(BuildData latestBuild)
 		{
-			var buildListData = await reader.ReadBuildList(latestBuild.BuildType);
+			var buildListData = await _reader.ReadBuildList(latestBuild.BuildType);
 			var buildList = new BuildListXmlParser(buildListData);
 
 			var result =  buildList.FromIdBackToLastPin(latestBuild.Id);
@@ -90,7 +97,7 @@ namespace TeamCityChangeNotifier
 
 		private async Task<BuildData> ReadBuild(int buildId)
 		{
-			var releaseData = await reader.ReadBuild(buildId);
+			var releaseData = await _reader.ReadBuild(buildId);
 			var parser = new BuildXmlParser(releaseData);
 			var data = parser.GetBuildData();
 
