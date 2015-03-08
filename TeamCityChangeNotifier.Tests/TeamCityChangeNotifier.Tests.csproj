@@ -41,10 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FakeTeamCityReader.cs" />
     <Compile Include="Helpers\DisplayFormatsCountsTests.cs" />
     <Compile Include="Helpers\DisplayFormatsDurationTests.cs" />
     <Compile Include="Models\ChangeSetTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TeamCityOperationsTests.cs" />
     <Compile Include="XmlParsers\BuildListXmlParserTests.cs" />
     <Compile Include="XmlParsers\BuildXmlParserTests.cs" />
     <Compile Include="XmlParsers\ChangeDataParserTests.cs" />
