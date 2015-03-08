@@ -13,10 +13,10 @@ namespace TeamCityChangeNotifier
 {
 	public class TeamCityOperations
 	{
-		private readonly TeamCityReader _reader;
+		private readonly ITeamCityReader _reader;
 		private readonly Request _request;
 
-		public TeamCityOperations(TeamCityReader reader, Request request)
+		public TeamCityOperations(ITeamCityReader reader, Request request)
 		{
 			_request = request;
 			_reader = reader; 

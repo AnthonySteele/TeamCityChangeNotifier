@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 
 namespace TeamCityChangeNotifier.Helpers
 {
@@ -19,17 +20,22 @@ namespace TeamCityChangeNotifier.Helpers
 			TeamCityUser = Read("TeamCityUser");
 			TeamCityPassword = Read("TeamCityPassword");
 
-			TeamCityUrl = Read("TeamcityUrl");
+			TeamCityUrl = Read("TeamcityUrl", true);
 			TeamCityRestUrl = UriPath.Combine(TeamCityUrl, "httpAuth/app/rest");
 
-			SmtpHost = Read("SmtpHost");
-			DestinationEmail = Read("DestinationEmail");
-			SenderEmail = Read("SenderEmail");
+			SmtpHost = Read("SmtpHost", true);
+			DestinationEmail = Read("DestinationEmail", true);
+			SenderEmail = Read("SenderEmail", true);
 		}
 
-		private string Read(string key)
+		private string Read(string key, bool mandatory = false)
 		{
-			return ConfigurationManager.AppSettings[key];
+			var result = ConfigurationManager.AppSettings[key];
+			if (mandatory && string.IsNullOrEmpty(result))
+			{
+				throw new Exception("Did not find config value for " + key);
+			}
+			return result;
 		}
 	}
 }

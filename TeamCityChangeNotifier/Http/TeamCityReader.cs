@@ -3,7 +3,7 @@ using TeamCityChangeNotifier.Helpers;
 
 namespace TeamCityChangeNotifier.Http
 {
-	public class TeamCityReader
+	public class TeamCityReader : ITeamCityReader
 	{
 		private readonly ConfigSettings _settings = new ConfigSettings();
 		private readonly HttpReader _reader;
