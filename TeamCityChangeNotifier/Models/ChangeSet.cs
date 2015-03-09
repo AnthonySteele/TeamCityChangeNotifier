@@ -24,6 +24,8 @@ namespace TeamCityChangeNotifier.Models
 		{
 			var result = new StringBuilder();
 			result.AppendLine(Summary());
+			result.AppendFormat("Finished at {0:f}\r\n", ReleaseBuild.FinishDate);
+
 			result.AppendLine();
 			foreach (var change in Changes)
 			{
