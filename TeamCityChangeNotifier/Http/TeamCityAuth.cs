@@ -38,7 +38,7 @@ namespace TeamCityChangeNotifier.Http
 
 		private string ReadTeamCityUser()
 		{
-			if (_request != null)
+			if (_request != null && (! string.IsNullOrEmpty(_request.TeamCityUser)))
 			{
 				return _request.TeamCityUser;
 			}
@@ -53,7 +53,7 @@ namespace TeamCityChangeNotifier.Http
 
 		private string ReadTeamCityPassword()
 		{
-			if (_request != null)
+			if (_request != null && (!string.IsNullOrEmpty(_request.TeamCityPassword)))
 			{
 				return _request.TeamCityPassword;
 			}
