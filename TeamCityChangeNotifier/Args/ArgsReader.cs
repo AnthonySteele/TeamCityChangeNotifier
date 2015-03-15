@@ -1,32 +1,43 @@
-﻿namespace TeamCityChangeNotifier.Args
+﻿using System.Collections.Generic;
+
+namespace TeamCityChangeNotifier.Args
 {
 	public class ArgsReader
 	{
-		public Request ReadArgs(string[] args)
+		public Request ReadArgs(IEnumerable<string> args)
 		{
-			int buildId = 0;
+			int? buildId = null;
 			string teamcityUser = null;
 			string teamcityPassword = null;
 			
 			foreach (var arg in args)
 			{
-				if (arg.StartsWith("id:"))
+				if (MatchesPrefix(arg,"pw"))
 				{
-					var idArg = arg.Substring(3);
-					var parsed = int.TryParse(idArg, out buildId);
-					if (!parsed)
+					teamcityPassword = AfterPrefix(arg, "pw");
+				}
+				else if (MatchesPrefix(arg, "u"))
+				{
+					teamcityUser = AfterPrefix(arg, "u");
+				}
+				else if (MatchesPrefix(arg, "id"))
+				{
+					var idArg = AfterPrefix(arg, "id");
+					int value;
+					var parsed = int.TryParse(idArg, out value);
+					if (parsed)
 					{
-						var message = string.Format("The argument '{0}' is not a teamcity build number", args[0]);
+						buildId = value;
+					}
+					else
+					{
+						var message = string.Format("The argument '{0}' is not a number", arg);
 						return Request.Error(message);
 					}
 				}
-				else if (arg.StartsWith("pw:"))
+				else if (IsInt(arg))
 				{
-					teamcityPassword = arg.Substring(3);
-				}
-				else if (arg.StartsWith("u:"))
-				{
-					teamcityUser = arg.Substring(2);
+					buildId = int.Parse(arg);
 				}
 				else
 				{
@@ -34,7 +45,7 @@
 				}
 			}
 
-			if (buildId == 0)
+			if (! buildId.HasValue)
 			{
 				return Request.Error("Please supply a teamcity build number");
 			}
@@ -42,10 +53,27 @@
 			return new Request
 				{
 					ArgsError = false,
-					InitialBuildId = buildId,
+					InitialBuildId = buildId.Value,
 					TeamCityUser = teamcityUser,
 					TeamCityPassword = teamcityPassword
 				};
+		}
+
+		private static bool IsInt(string valueIn)
+		{
+			int valueOut;
+			var parsed = int.TryParse(valueIn, out valueOut);
+			return parsed;
+		}
+
+		private static bool MatchesPrefix(string arg, string prefix)
+		{
+			return arg.StartsWith(prefix + ":");
+		}
+
+		private static string AfterPrefix(string arg, string prefix)
+		{
+			return arg.Substring(prefix.Length + 1);
 		}
 	}
 }

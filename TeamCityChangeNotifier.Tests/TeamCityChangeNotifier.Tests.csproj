@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArgsReaderTests.cs" />
     <Compile Include="FakeTeamCityReader.cs" />
     <Compile Include="Helpers\DisplayFormatsCountsTests.cs" />
     <Compile Include="Helpers\DisplayFormatsDurationTests.cs" />
