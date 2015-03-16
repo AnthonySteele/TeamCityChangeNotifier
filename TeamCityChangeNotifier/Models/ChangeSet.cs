@@ -16,8 +16,8 @@ namespace TeamCityChangeNotifier.Models
 		{
 			var elapsed = DisplayFormats.Between(Builds.LatestBuild.FinishDate, Builds.PreviousPinned.FinishDate);
 
-			return string.Format("Release to {0} with {1} in {2} over {3}", 
-				ReleaseBuild.ProjectName, ChangeCount(), BuildCount(), elapsed);
+			return string.Format("Release to {0} with {1} over {2}", 
+				ReleaseBuild.ProjectName, ChangeCount(), elapsed);
 		}
 
 		public string Details()
